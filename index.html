@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <title>WORD HUNTER｜ゆか × たけ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <section id="home" class="screen active">
+    <div class="hero">
+      <div class="eyebrow">YUKA × TAKE</div>
+      <h1>WORD<br>HUNTER</h1>
+      <p>会話と質問で、相手のお題を当てよう。</p>
+    </div>
+
+    <div class="card">
+      <button id="rulesBtn" class="secondary">📖 ルールを見る</button>
+
+      <label>制限時間</label>
+      <div class="time-setting">
+        <button id="minusTime" aria-label="30秒減らす">−</button>
+        <strong id="timeSetting">05:00</strong>
+        <button id="plusTime" aria-label="30秒増やす">＋</button>
+      </div>
+      <p class="hint">初期設定5分。30秒単位で変更できます。</p>
+
+      <div class="data-status ok">
+        <span class="status-dot"></span>
+        <span id="dataStatus">お題を準備中</span>
+      </div>
+
+      <button id="startBtn" class="primary">ゲーム開始</button>
+    </div>
+  </section>
+
+  <section id="pass" class="screen">
+    <div class="card center">
+      <span class="step">STEP <b id="passStep">1</b> / 2</span>
+      <div class="phone-icon">📱</div>
+      <h2 id="passTitle">ゆかへ</h2>
+      <p id="passMessage">ゆかだけが画面を見てください。</p>
+      <button id="showWordBtn" class="primary">お題を確認する</button>
+    </div>
+  </section>
+
+  <section id="word" class="screen">
+    <div class="card center">
+      <span class="step" id="wordPlayer">ゆか</span>
+      <p>あなたのお題は……</p>
+      <div id="secretWord" class="secret-word">---</div>
+      <p id="secretGenre" class="genre"></p>
+      <button id="hideWordBtn" class="primary">見終わった・画面を隠す</button>
+    </div>
+  </section>
+
+  <section id="handoff" class="screen">
+    <div class="card center handoff-card">
+      <div class="lock">🔒</div>
+      <h2>お題を隠しました</h2>
+      <p id="handoffText">スマホをたけに渡してください。</p>
+      <button id="handoffBtn" class="primary">たけが受け取った</button>
+    </div>
+  </section>
+
+  <section id="game" class="screen">
+    <div class="topbar">
+      <div>
+        <span>TIME</span>
+        <b id="timer">05:00</b>
+      </div>
+      <button id="gameRulesBtn" class="small">📖 ルール</button>
+    </div>
+
+    <div class="card">
+      <div class="pulse">●</div>
+      <h2>推理タイム</h2>
+      <p>質問しながら相手のお題を推理してください。</p>
+      <p><b>嘘は禁止。</b> 濁したり、曖昧に答えるのはOKです。</p>
+    </div>
+
+    <div class="game-actions">
+      <button id="extendBtn" class="secondary">＋1分延長</button>
+      <button id="pauseBtn" class="secondary">一時停止</button>
+    </div>
+    <button id="answerBtn" class="primary">最終回答へ</button>
+  </section>
+
+  <section id="answer" class="screen">
+    <div class="card center">
+      <span class="step">FINAL ANSWER</span>
+      <h2>口頭で答えよう</h2>
+      <p id="oralPrompt">ゆかは、たけのお題を口頭で答えてください。</p>
+      <button id="oralNextBtn" class="primary">ゆかが回答した</button>
+    </div>
+  </section>
+
+  <section id="result" class="screen">
+    <div class="card center">
+      <span class="step">RESULT</span>
+      <h2 id="resultTitle">結果</h2>
+      <div id="resultBody" class="result-body"></div>
+      <button id="againBtn" class="primary">もう一度遊ぶ</button>
+      <button id="homeBtn" class="secondary">トップへ戻る</button>
+    </div>
+  </section>
+</main>
+
+<div id="rulesModal" class="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+    <button class="modal-close" id="closeRulesBtn" aria-label="閉じる">×</button>
+    <h2 id="rulesTitle">📖 ルール</h2>
+    <p><b>ゆかとたけが、お互いのお題を当てるゲームです。</b></p>
+    <ol>
+      <li>それぞれに別のお題が配られます。</li>
+      <li>会話や質問をしながら、相手のお題を推理します。</li>
+      <li><b>質問に対して嘘をつくことは禁止</b>です。</li>
+      <li>ただし、答えを濁したり、曖昧に答えたりするのはOKです。</li>
+      <li>お題そのものを直接言うのは禁止です。</li>
+      <li>制限時間内に、お互いのお題を当てることを目指します。</li>
+      <li>時間切れになると音が鳴り、最終回答へ進みます。</li>
+    </ol>
+    <div class="example">
+      <b>例</b><br>
+      お題が「カレー」で「食べ物？」と聞かれた場合<br>
+      ⭕「そうとも言えるね」<br>
+      ❌「違うよ」
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
