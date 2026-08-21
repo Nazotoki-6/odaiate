@@ -6,6 +6,14 @@
   <meta name="theme-color" content="#0b1020">
   <title>WORD HUNTER｜ゆか × たけ</title>
   <link rel="stylesheet" href="style.css">
+
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#0b1020">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ワードゲーム">
+<link rel="apple-touch-icon" href="./icon-192.png">
+
 </head>
 <body>
 <main class="app">
@@ -29,7 +37,7 @@
 
       <div class="data-status ok">
         <span class="status-dot"></span>
-        <span id="dataStatus">お題を準備中</span>
+        <span id="dataStatus">お題 100,000個 準備完了</span>
       </div>
 
       <button id="startBtn" class="primary">ゲーム開始</button>
@@ -52,6 +60,8 @@
       <p>あなたのお題は……</p>
       <div id="secretWord" class="secret-word">---</div>
       <p id="secretGenre" class="genre"></p>
+      <button id="changeWordBtn" class="secondary">🔄 お題を1回だけ変更</button>
+      <p id="changeWordHint" class="hint">このプレイヤーは1回だけ変更できます。</p>
       <button id="hideWordBtn" class="primary">見終わった・画面を隠す</button>
     </div>
   </section>
@@ -101,8 +111,9 @@
     <div class="card center">
       <span class="step">RESULT</span>
       <h2 id="resultTitle">結果</h2>
-      <div id="resultBody" class="result-body"></div>
-      <button id="againBtn" class="primary">もう一度遊ぶ</button>
+      <div id="resultBody" class="result-body tablet-result"></div>
+      <button id="revealNextBtn" class="primary">ゆかのお題を発表</button>
+      <button id="againBtn" class="primary" style="display:none">もう一度遊ぶ</button>
       <button id="homeBtn" class="secondary">トップへ戻る</button>
     </div>
   </section>
@@ -121,6 +132,8 @@
       <li>ただし、答えを濁したり、曖昧に答えたりするのはOKです。</li>
       <li>お題そのものを直接言うのは禁止です。</li>
       <li>制限時間内に、お互いのお題を当てることを目指します。</li>
+      <li>お題を知らない場合は、各プレイヤー1回だけ変更できます。</li>
+      <li>1分経過するごとに音で知らせ、残り30秒で警告音、残り10秒から毎秒カウントダウン音が鳴ります。</li>
       <li>時間切れになると音が鳴り、最終回答へ進みます。</li>
     </ol>
     <div class="example">
@@ -133,5 +146,15 @@
 </div>
 
 <script src="script.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(err => console.error("Service Worker registration failed:", err));
+  });
+}
+</script>
+
 </body>
 </html>
