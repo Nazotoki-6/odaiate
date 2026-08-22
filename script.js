@@ -108,3 +108,19 @@ function advanceAnswerer(){
   }
   updateRoundLabels();
 }
+
+function buildGenreList(){
+  const counts={};
+  TOPICS.forEach(item=>{const g=item.genre||"その他";counts[g]=(counts[g]||0)+1;});
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],"ja"));
+  const body=document.getElementById("genreListBody");
+  const summary=document.getElementById("genreSummary");
+  if(!body||!summary)return;
+  summary.textContent=`全${TOPICS.length}お題・${entries.length}ジャンル`;
+  body.innerHTML=entries.map(([name,count])=>`<div class="genre-row"><span class="genre-name">${name}</span><span class="genre-count">${count}個</span></div>`).join("");
+}
+function openGenreModal(){buildGenreList();const m=document.getElementById("genreModal");if(m){m.classList.add("open");m.setAttribute("aria-hidden","false");}}
+function closeGenreModal(){const m=document.getElementById("genreModal");if(m){m.classList.remove("open");m.setAttribute("aria-hidden","true");}}
+document.getElementById("genreListBtn")?.addEventListener("click",openGenreModal);
+document.getElementById("closeGenreModalBtn")?.addEventListener("click",closeGenreModal);
+document.querySelector("[data-close-genre-modal]")?.addEventListener("click",closeGenreModal);

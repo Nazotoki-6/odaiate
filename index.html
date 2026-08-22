@@ -56,6 +56,7 @@
 </div>
 <div id="orderPreview" class="order-preview" style="display:none"></div>
 
+<button id="genreListBtn" class="secondary">📚 ジャンル一覧</button>
 <button id="startBtn" class="primary">ゲーム開始</button>
     </div>
   </section>
@@ -171,6 +172,19 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
+
+
+<div id="genreModal" class="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-genre-modal></div>
+  <div class="modal-card genre-modal-card" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <h2>ジャンル一覧</h2>
+      <button id="closeGenreModalBtn" class="icon-btn" aria-label="閉じる">✕</button>
+    </div>
+    <p id="genreSummary" class="genre-summary"></p>
+    <div id="genreListBody" class="genre-list-body"></div>
+  </div>
+</div>
 
 </body>
 </html>

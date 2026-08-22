@@ -1,4 +1,4 @@
-const CACHE_NAME = "odaiate-pwa-v5-no-jojo";
+const CACHE_NAME = "odaiate-pwa-v6-genre-list";
 
 const APP_FILES = [
   "./",
