@@ -638,3 +638,30 @@ button.secondary {
 .genre-count{flex:0 0 auto;min-width:72px;text-align:right;font-variant-numeric:tabular-nums;opacity:.82}
 @media (orientation:landscape) and (min-width:700px){.genre-list-body{grid-template-columns:repeat(3,minmax(0,1fr))}.genre-modal-card{max-height:82vh}}
 @media (max-width:699px){.genre-list-body{grid-template-columns:1fr}}
+
+/* v11: reliable genre modal visibility */
+#genreModal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+#genreModal.open{display:flex}
+#genreModal .modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.72);
+}
+#genreModal .genre-modal-card{
+  position:relative;
+  z-index:1;
+}
+#closeGenreModalBtn{
+  cursor:pointer;
+  touch-action:manipulation;
+  min-width:52px;
+  min-height:52px;
+}

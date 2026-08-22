@@ -1,4 +1,4 @@
-const CACHE_NAME = "odaiate-pwa-v6-genre-list";
+const CACHE_NAME = "odaiate-pwa-v11-modal-fix";
 
 const APP_FILES = [
   "./",
