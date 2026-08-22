@@ -21,7 +21,7 @@
     <div class="hero">
       <div class="eyebrow">YUKA × TAKE</div>
       <h1>WORD<br>HUNTER</h1>
-      <p>会話と質問で、相手のお題を当てよう。</p>
+      <p>1人がお題を見て、みんなで質問して当てよう。</p>
     </div>
 
     <div class="card">
@@ -40,13 +40,29 @@
         <span id="dataStatus">お題 100,000個 準備完了</span>
       </div>
 
-      <button id="startBtn" class="primary">ゲーム開始</button>
+      
+<div id="playerSelectCard" class="player-select-card">
+  <h2>参加者を選択</h2>
+  <div class="player-check-grid">
+    <label><input type="checkbox" class="playerCheck" value="ゆか" checked> ゆか</label>
+    <label><input type="checkbox" class="playerCheck" value="たけ" checked> たけ</label>
+    <label><input type="checkbox" class="playerCheck" value="つね"> つね</label>
+    <label><input type="checkbox" class="playerCheck" value="ともみ"> ともみ</label>
+    <label><input type="checkbox" class="playerCheck" value="お母さん"> お母さん</label>
+    <label><input type="checkbox" class="playerCheck" value="お父さん"> お父さん</label>
+  </div>
+  <button id="toggleAllPlayersBtn" class="secondary">全員ON/OFF</button>
+  <p class="hint">チェックした人だけで、回答者の順番を毎回ランダムに決めます。</p>
+</div>
+<div id="orderPreview" class="order-preview" style="display:none"></div>
+
+<button id="startBtn" class="primary">ゲーム開始</button>
     </div>
   </section>
 
   <section id="pass" class="screen">
     <div class="card center">
-      <span class="step">STEP <b id="passStep">1</b> / 2</span>
+      <span class="step">ANSWERER</span>
       <div class="phone-icon">📱</div>
       <h2 id="passTitle">ゆかへ</h2>
       <p id="passMessage">ゆかだけが画面を見てください。</p>
@@ -70,8 +86,8 @@
     <div class="card center handoff-card">
       <div class="lock">🔒</div>
       <h2>お題を隠しました</h2>
-      <p id="handoffText">スマホをたけに渡してください。</p>
-      <button id="handoffBtn" class="primary">たけが受け取った</button>
+      <p id="handoffText">お題を隠しました。みんなで画面を見られる位置に戻してください。</p>
+      <button id="handoffBtn" class="primary">質問タイム開始</button>
     </div>
   </section>
 
@@ -86,9 +102,9 @@
 
     <div class="card">
       <div class="pulse">●</div>
-      <h2>推理タイム</h2>
-      <p>質問しながら相手のお題を推理してください。</p>
-      <p><b>嘘は禁止。</b> 濁したり、曖昧に答えるのはOKです。</p>
+      <h2>質問タイム</h2>
+      <p id="gameGuide">質問者は、回答者に質問してお題を推理してください。</p>
+      <p><b>回答者は嘘禁止。</b>「はい／いいえ／どちらとも言えない」など口頭で答えます。</p>
     </div>
 
     <div class="game-actions">
@@ -101,9 +117,9 @@
   <section id="answer" class="screen">
     <div class="card center">
       <span class="step">FINAL ANSWER</span>
-      <h2>口頭で答えよう</h2>
-      <p id="oralPrompt">ゆかは、たけのお題を口頭で答えてください。</p>
-      <button id="oralNextBtn" class="primary">ゆかが回答した</button>
+      <h2>答えを発表！</h2>
+      <p id="oralPrompt">質問タイム終了。答えを確認しましょう。</p>
+      <button id="oralNextBtn" class="primary">答えを見る</button>
     </div>
   </section>
 
@@ -112,7 +128,7 @@
       <span class="step">RESULT</span>
       <h2 id="resultTitle">結果</h2>
       <div id="resultBody" class="result-body tablet-result"></div>
-      <button id="revealNextBtn" class="primary">ゆかのお題を発表</button>
+      <button id="revealNextBtn" class="primary">答えを発表</button>
       <button id="againBtn" class="primary" style="display:none">もう一度遊ぶ</button>
       <button id="homeBtn" class="secondary">トップへ戻る</button>
     </div>
@@ -124,23 +140,23 @@
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
     <button class="modal-close" id="closeRulesBtn" aria-label="閉じる">×</button>
     <h2 id="rulesTitle">📖 ルール</h2>
-    <p><b>ゆかとたけが、お互いのお題を当てるゲームです。</b></p>
+    <p><b>1人が回答者になり、ほかの人が質問してお題を当てるゲームです。</b></p>
     <ol>
-      <li>それぞれに別のお題が配られます。</li>
-      <li>会話や質問をしながら、相手のお題を推理します。</li>
-      <li><b>質問に対して嘘をつくことは禁止</b>です。</li>
-      <li>ただし、答えを濁したり、曖昧に答えたりするのはOKです。</li>
-      <li>お題そのものを直接言うのは禁止です。</li>
-      <li>制限時間内に、お互いのお題を当てることを目指します。</li>
-      <li>お題を知らない場合は、各プレイヤー1回だけ変更できます。</li>
-      <li>1分経過するごとに音で知らせ、残り30秒で警告音、残り10秒から毎秒カウントダウン音が鳴ります。</li>
-      <li>時間切れになると音が鳴り、最終回答へ進みます。</li>
+      <li>今回の回答者だけがお題を確認します。</li>
+      <li>お題を隠したら、5分間の質問タイムを開始します。</li>
+      <li>質問者は何人でも参加できます。順番でも自由質問でもOKです。</li>
+      <li>回答者は質問に口頭で答えます。<b>嘘は禁止</b>です。</li>
+      <li>お題そのものを回答者が直接言うのは禁止です。</li>
+      <li>お題を知らない場合は1回だけ変更できます。</li>
+      <li>1分経過ごとに音、残り30秒で警告音、残り10秒からカウントダウン音が鳴ります。</li>
+      <li>時間切れ、または途中で「答え発表へ」を押したら正解を表示します。</li>
+      <li>次のラウンドでは回答者が「ゆか → たけ → ゆか…」と交代します。</li>
     </ol>
     <div class="example">
       <b>例</b><br>
-      お題が「カレー」で「食べ物？」と聞かれた場合<br>
-      ⭕「そうとも言えるね」<br>
-      ❌「違うよ」
+      回答者のお題が「カレー」で「食べ物？」と聞かれた場合<br>
+      ⭕「はい」<br>
+      ❌ 嘘をついて「いいえ」
     </div>
   </div>
 </div>
