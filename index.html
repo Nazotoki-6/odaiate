@@ -15,8 +15,16 @@
 <link rel="apple-touch-icon" href="./icon-192.png">
 
 </head>
-<body>
-<main class="app">
+\1
+<div id="updateBanner" class="update-banner" hidden>
+  <div class="update-banner__text">
+    <strong>アプリに更新があります</strong>
+    <span>最新版を反映できます。</span>
+  </div>
+  <button id="updateAppButton" type="button" class="update-banner__button">最新版に更新</button>
+</div>
+
+<div id="answerOrderPanel" class="answer-order-panel" style="display:none"><div class="order-title">回答者の順番</div><div id="answerOrderTrack" class="answer-order-track"></div><div class="order-now-next"><span id="currentAnswererLabel"></span><span id="nextAnswererLabel"></span></div></div><main class="app">
   <section id="home" class="screen active">
     <div class="hero">
       <div class="eyebrow">YUKA × TAKE</div>
@@ -30,10 +38,10 @@
       <label>制限時間</label>
       <div class="time-setting">
         <button id="minusTime" aria-label="30秒減らす">−</button>
-        <strong id="timeSetting">05:00</strong>
+        <strong id="timeSetting">03:00</strong>
         <button id="plusTime" aria-label="30秒増やす">＋</button>
       </div>
-      <p class="hint">初期設定5分。30秒単位で変更できます。</p>
+      <p class="hint">初期設定3分。30秒単位で変更できます。</p>
 
       <div class="data-status ok">
         <span class="status-dot"></span>
@@ -75,8 +83,15 @@
     <div class="card center">
       <span class="step" id="wordPlayer">ゆか</span>
       <p>あなたのお題は……</p>
-      <div id="secretWord" class="secret-word">---</div>
+      
+<div id="secretRoleNote" class="secret-role-note">
+  <strong>回答者は画面を見ないで！</strong>
+  <span>ここから先のお題・作品名・肩書きなどは出題側だけが確認します。</span>
+</div>
+
+<div id="secretWord" class="secret-word">---</div>
       <p id="secretGenre" class="genre"></p>
+      <p id="sourceWork" class="source-work" style="display:none"></p>
       <button id="changeWordBtn" class="secondary">🔄 お題を1回だけ変更</button>
       <p id="changeWordHint" class="hint">このプレイヤーは1回だけ変更できます。</p>
       <button id="hideWordBtn" class="primary">見終わった・画面を隠す</button>
@@ -96,7 +111,30 @@
     <div class="topbar">
       <div>
         <span>TIME</span>
-        <b id="timer">05:00</b>
+        
+        
+<div id="roleGuide" class="role-guide" hidden>
+  <strong id="roleGuideAnswerer">回答者：---</strong>
+  <span>ジャンルだけを見て質問しよう！ 質問も回答も1回につき＋1カウント。少ないカウントで正解を目指そう！</span>
+</div>
+
+<div id="publicGameInfo" class="public-game-info" style="display:none;">
+          <div class="public-genre-card">
+            <span class="public-label">今回のジャンル</span>
+            <strong id="publicGenre">-</strong>
+          </div>
+          <div class="question-limit-card">
+            <span class="public-label">残り質問</span>
+            <strong id="questionRemaining">10</strong>
+            <span class="question-unit">回</span>
+          </div>
+          <button id="questionUsedButton" type="button" class="question-used-button">質問した！</button>
+        </div>
+
+        <div id="answerPhaseNotice" class="answer-phase-notice" style="display:none;">
+          質問タイム終了！ 回答してください
+        </div>
+<b id="timer">03:00</b>
       </div>
       <button id="gameRulesBtn" class="small">📖 ルール</button>
     </div>
@@ -143,8 +181,8 @@
     <h2 id="rulesTitle">📖 ルール</h2>
     <p><b>1人が回答者になり、ほかの人が質問してお題を当てるゲームです。</b></p>
     <ol>
-      <li>今回の回答者だけがお題を確認します。</li>
-      <li>お題を隠したら、5分間の質問タイムを開始します。</li>
+      <li>今回の出題側だけがお題を確認します。</li>
+      <li>お題を隠したら、3分間の質問タイムを開始します。</li>
       <li>質問者は何人でも参加できます。順番でも自由質問でもOKです。</li>
       <li>回答者は質問に口頭で答えます。<b>嘘は禁止</b>です。</li>
       <li>お題そのものを回答者が直接言うのは禁止です。</li>
@@ -155,7 +193,7 @@
     </ol>
     <div class="example">
       <b>例</b><br>
-      回答者のお題が「カレー」で「食べ物？」と聞かれた場合<br>
+      出題側のお題が「カレー」で「食べ物？」と聞かれた場合<br>
       ⭕「はい」<br>
       ❌ 嘘をついて「いいえ」
     </div>
@@ -166,9 +204,52 @@
 
 <script>
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js")
-      .catch(err => console.error("Service Worker registration failed:", err));
+  let waitingWorker = null;
+  let refreshing = false;
+
+  function showUpdate(worker) {
+    waitingWorker = worker || waitingWorker;
+    const banner = document.getElementById("updateBanner");
+    if (banner) banner.hidden = false;
+  }
+
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (refreshing) return;
+    refreshing = true;
+    location.reload();
+  });
+
+  window.addEventListener("load", async () => {
+    const button = document.getElementById("updateAppButton");
+    if (button) {
+      button.addEventListener("click", async () => {
+        button.disabled = true;
+        button.textContent = "更新中…";
+        const reg = await navigator.serviceWorker.getRegistration();
+        const worker = waitingWorker || (reg && reg.waiting);
+        if (worker) worker.postMessage({ type: "SKIP_WAITING" });
+        else location.reload();
+      });
+    }
+
+    try {
+      const reg = await navigator.serviceWorker.register("./service-worker.js");
+      if (reg.waiting) showUpdate(reg.waiting);
+      reg.addEventListener("updatefound", () => {
+        const worker = reg.installing;
+        if (!worker) return;
+        worker.addEventListener("statechange", () => {
+          if (worker.state === "installed" && navigator.serviceWorker.controller) showUpdate(worker);
+        });
+      });
+      reg.update().catch(() => {});
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") reg.update().catch(() => {});
+      });
+      setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+    } catch (err) {
+      console.error("Service Worker registration failed:", err);
+    }
   });
 }
 </script>

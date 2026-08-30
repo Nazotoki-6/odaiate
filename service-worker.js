@@ -1,4 +1,4 @@
-const CACHE_NAME = "odaiate-pwa-v11-modal-fix";
+const CACHE_NAME = "odaiate-pwa-v21-count-system";
 
 const APP_FILES = [
   "./",
@@ -12,7 +12,6 @@ const APP_FILES = [
 ];
 
 self.addEventListener("install", event => {
-  self.skipWaiting();
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
 });
 
@@ -30,4 +29,9 @@ self.addEventListener("fetch", event => {
       return response;
     }).catch(() => caches.match("./index.html"));
   }));
+});
+
+
+self.addEventListener("message", event => {
+  if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
 });
