@@ -10,9 +10,7 @@ function pickTopicAvoidingRecent(){const recent=new Set(getRecentTopics());let p
 const PLAYERS = ["ゆか", "たけ"];
 
 
-const QUESTION_LIMIT = 10;
-let remainingQuestions = QUESTION_LIMIT;
-let questionPhaseEnded = false;
+let actionCount = 0;
 
 function getCurrentTopicItem() {
   if (typeof currentTopic !== "undefined" && currentTopic) return currentTopic;
@@ -24,62 +22,45 @@ function getCurrentTopicItem() {
 function updateQuestionLimitUI() {
   const info = document.getElementById("publicGameInfo");
   const genreEl = document.getElementById("publicGenre");
-  const remainingEl = document.getElementById("questionRemaining");
-  const btn = document.getElementById("questionUsedButton");
-  const notice = document.getElementById("answerPhaseNotice");
-
+  const countEl = document.getElementById("questionRemaining");
+  const undoBtn = document.getElementById("countUndoButton");
   const item = getCurrentTopicItem();
+
   if (genreEl) genreEl.textContent = item?.genre || "-";
-  if (remainingEl) remainingEl.textContent = String(remainingQuestions);
-
-  if (btn) {
-    btn.disabled = questionPhaseEnded || remainingQuestions <= 0;
-    btn.textContent = questionPhaseEnded ? "質問終了" : "質問した！ ＋1";
-  }
-
+  if (countEl) countEl.textContent = String(actionCount);
+  if (undoBtn) undoBtn.disabled = actionCount <= 0;
   if (info) info.style.display = item ? "" : "none";
-  if (notice) notice.style.display = questionPhaseEnded ? "" : "none";
 }
 
 function resetQuestionLimit() {
-  remainingQuestions = QUESTION_LIMIT;
-  questionPhaseEnded = false;
+  actionCount = 0;
   updateQuestionLimitUI();
 }
 
-function endQuestionPhase(reason = "limit") {
-  if (questionPhaseEnded) return;
-  questionPhaseEnded = true;
+function addActionCount() {
+  actionCount += 1;
   updateQuestionLimitUI();
-
-  if (reason === "limit") {
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.frequency.value = 660;
-      gain.gain.value = 0.07;
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start();
-      setTimeout(() => { osc.stop(); ctx.close(); }, 180);
-    } catch(e) {}
+  const card = document.querySelector(".question-limit-card");
+  if (card) {
+    card.classList.remove("count-pop");
+    void card.offsetWidth;
+    card.classList.add("count-pop");
   }
 }
 
-function useOneQuestion() {
-  if (questionPhaseEnded || remainingQuestions <= 0) return;
-  remainingQuestions -= 1;
-  if (remainingQuestions <= 0) {
-    remainingQuestions = 0;
-    endQuestionPhase("limit");
-  } else {
-    updateQuestionLimitUI();
-  }
+function undoActionCount() {
+  if (actionCount <= 0) return;
+  actionCount -= 1;
+  updateQuestionLimitUI();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   const qbtn = document.getElementById("questionUsedButton");
-  if (qbtn) qbtn.addEventListener("click", useOneQuestion);
+  const abtn = document.getElementById("answerUsedButton");
+  const ubtn = document.getElementById("countUndoButton");
+  if (qbtn) qbtn.addEventListener("click", addActionCount);
+  if (abtn) abtn.addEventListener("click", addActionCount);
+  if (ubtn) ubtn.addEventListener("click", undoActionCount);
   updateQuestionLimitUI();
 });
 

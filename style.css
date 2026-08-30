@@ -943,3 +943,16 @@ button.secondary {
     min-height:68px;
   }
 }
+
+/* v22 true count-up controls */
+.count-action-buttons{
+  display:flex;
+  gap:10px;
+  flex:1.5;
+}
+.count-action-buttons button{min-height:58px;font-weight:800;border-radius:14px}
+.answer-used-button{flex:1;font-size:clamp(17px,2vw,25px)}
+.question-used-button{flex:1;font-size:clamp(17px,2vw,25px)}
+.count-undo-button{flex:.65;font-size:clamp(13px,1.4vw,18px)}
+.count-pop{animation:countPopV22 .2s ease-out}
+@keyframes countPopV22{50%{transform:scale(1.08)}}

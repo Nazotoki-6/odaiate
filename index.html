@@ -124,16 +124,18 @@
             <strong id="publicGenre">-</strong>
           </div>
           <div class="question-limit-card">
-            <span class="public-label">残り質問</span>
-            <strong id="questionRemaining">10</strong>
-            <span class="question-unit">回</span>
+            <span class="public-label">現在のカウント</span>
+            <strong id="questionRemaining">0</strong>
+            <span class="question-unit">カウント</span>
           </div>
-          <button id="questionUsedButton" type="button" class="question-used-button">質問した！</button>
+          <div class="count-action-buttons">
+            <button id="questionUsedButton" type="button" class="question-used-button">質問した！ ＋1</button>
+            <button id="answerUsedButton" type="button" class="answer-used-button">回答した！ ＋1</button>
+            <button id="countUndoButton" type="button" class="count-undo-button">押し間違い −1</button>
+          </div>
         </div>
 
-        <div id="answerPhaseNotice" class="answer-phase-notice" style="display:none;">
-          質問タイム終了！ 回答してください
-        </div>
+        
 <b id="timer">03:00</b>
       </div>
       <button id="gameRulesBtn" class="small">📖 ルール</button>
