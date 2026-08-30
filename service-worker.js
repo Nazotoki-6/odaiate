@@ -1,4 +1,4 @@
-const CACHE_NAME = "odaiate-pwa-v22-countup-fixed";
+const CACHE_NAME = "odaiate-pwa-v24-genre-cleanup";
 
 const APP_FILES = [
   "./",
