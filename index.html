@@ -15,7 +15,8 @@
 <link rel="apple-touch-icon" href="./icon-192.png">
 
 </head>
-\1
+<body>
+
 <div id="updateBanner" class="update-banner" hidden>
   <div class="update-banner__text">
     <strong>アプリに更新があります</strong>
@@ -24,64 +25,43 @@
   <button id="updateAppButton" type="button" class="update-banner__button">最新版に更新</button>
 </div>
 
-<div id="answerOrderPanel" class="answer-order-panel" style="display:none"><div class="order-title">回答者の順番</div><div id="answerOrderTrack" class="answer-order-track"></div><div class="order-now-next"><span id="currentAnswererLabel"></span><span id="nextAnswererLabel"></span></div></div><main class="app">
+<main class="app">
   <section id="home" class="screen active">
     <div class="hero">
       <div class="eyebrow">YUKA × TAKE</div>
       <h1>WORD<br>HUNTER</h1>
-      <p>1人がお題を見て、みんなで質問して当てよう。</p>
+      <p>回答者が質問してお題を当てる、ゆか・たけ専用の2人ゲーム。</p>
     </div>
 
-    <div class="card">
-      <button id="rulesBtn" class="secondary">📖 ルールを見る</button>
-
-      <label>制限時間</label>
-      <div class="time-setting">
-        <button id="minusTime" aria-label="30秒減らす">−</button>
-        <strong id="timeSetting">03:00</strong>
-        <button id="plusTime" aria-label="30秒増やす">＋</button>
+    <div class="card home-card">
+      <div class="fixed-players">
+        <span class="fixed-players-label">プレイメンバー</span>
+        <strong>たけ × ゆか</strong>
+        <span id="nextAnswererHome" class="next-answerer-home">次の回答者：---</span>
       </div>
-      <p class="hint">初期設定3分。30秒単位で変更できます。</p>
-
-      <div class="data-status ok">
-        <span class="status-dot"></span>
-        <span id="dataStatus">お題 100,000個 準備完了</span>
+      <p id="dataStatus" class="hint">お題を準備中…</p>
+      <div class="home-actions">
+        <button id="historyBtn" class="secondary">📊 プレイ履歴</button>
+        <button id="rulesBtn" class="secondary">📖 ルールを見る</button>
+        <button id="genreListBtn" class="secondary">📚 ジャンル一覧</button>
       </div>
-
-      
-<div id="playerSelectCard" class="player-select-card">
-  <h2>参加者を選択</h2>
-  <div class="player-check-grid">
-    <label><input type="checkbox" class="playerCheck" value="ゆか" checked> ゆか</label>
-    <label><input type="checkbox" class="playerCheck" value="たけ" checked> たけ</label>
-    <label><input type="checkbox" class="playerCheck" value="つね"> つね</label>
-    <label><input type="checkbox" class="playerCheck" value="ともみ"> ともみ</label>
-    <label><input type="checkbox" class="playerCheck" value="お母さん"> お母さん</label>
-    <label><input type="checkbox" class="playerCheck" value="お父さん"> お父さん</label>
-  </div>
-  <button id="toggleAllPlayersBtn" class="secondary">全員ON/OFF</button>
-  <p class="hint">チェックした人だけで、回答者の順番を毎回ランダムに決めます。</p>
-</div>
-<div id="orderPreview" class="order-preview" style="display:none"></div>
-
-<button id="genreListBtn" class="secondary">📚 ジャンル一覧</button>
-<button id="startBtn" class="primary">ゲーム開始</button>
+      <button id="startBtn" class="primary">ゲーム開始</button>
     </div>
   </section>
 
   <section id="pass" class="screen">
     <div class="card center">
-      <span class="step">ANSWERER</span>
+      <span class="step">SECRET TOPIC</span>
       <div class="phone-icon">📱</div>
-      <h2 id="passTitle">ゆかへ</h2>
-      <p id="passMessage">ゆかだけが画面を見てください。</p>
-      <button id="showWordBtn" class="primary">お題を確認する</button>
+      <h2 id="passTitle">出題側へ</h2>
+      <p id="passMessage">回答者は画面を見ず、出題側だけがお題を確認します。</p>
+      <button id="showWordBtn" class="primary">出題側がお題を確認</button>
     </div>
   </section>
 
   <section id="word" class="screen">
     <div class="card center">
-      <span class="step" id="wordPlayer">ゆか</span>
+      <span class="step" id="wordPlayer">出題側だけ確認</span>
       <p>あなたのお題は……</p>
       
 <div id="secretRoleNote" class="secret-role-note">
@@ -103,14 +83,14 @@
       <div class="lock">🔒</div>
       <h2>お題を隠しました</h2>
       <p id="handoffText">お題を隠しました。みんなで画面を見られる位置に戻してください。</p>
-      <button id="handoffBtn" class="primary">質問タイム開始</button>
+      <button id="handoffBtn" class="primary">質問・回答スタート</button>
     </div>
   </section>
 
   <section id="game" class="screen">
     <div class="topbar">
       <div>
-        <span>TIME</span>
+        <span>COUNT GAME</span>
         
         
 <div id="roleGuide" class="role-guide" hidden>
@@ -134,32 +114,33 @@
             <button id="countUndoButton" type="button" class="count-undo-button">押し間違い −1</button>
           </div>
         </div>
-
-        
-<b id="timer">03:00</b>
-      </div>
+</div>
       <button id="gameRulesBtn" class="small">📖 ルール</button>
     </div>
 
     <div class="card">
       <div class="pulse">●</div>
-      <h2>質問タイム</h2>
-      <p id="gameGuide">質問者は、回答者に質問してお題を推理してください。</p>
-      <p><b>回答者は嘘禁止。</b>「はい／いいえ／どちらとも言えない」など口頭で答えます。</p>
+      <h2>質問・回答タイム</h2>
+      <p id="gameGuide">回答者がお題について質問し、出題側が答えます。</p>
+      <p><b>出題側の返答は「はい／いいえ／どちらともいえない／わからない」。</b>追加ヒントはなしです。</p>
     </div>
 
-    <div class="game-actions">
-      <button id="extendBtn" class="secondary">＋1分延長</button>
-      <button id="pauseBtn" class="secondary">一時停止</button>
+      <div id="correctCountReminder" class="count-reminder" role="note">
+        <strong>正解した回答も先に「回答した！＋1」</strong>
+        <span>そのあと「正解した！」を押してください。</span>
+      </div>
+
+      <div class="finish-actions">
+      <button id="answerBtn" class="primary">正解した！</button>
+      <button id="passGameBtn" class="secondary">今回はパス</button>
     </div>
-    <button id="answerBtn" class="primary">最終回答へ</button>
   </section>
 
   <section id="answer" class="screen">
     <div class="card center">
-      <span class="step">FINAL ANSWER</span>
-      <h2>答えを発表！</h2>
-      <p id="oralPrompt">質問タイム終了。答えを確認しましょう。</p>
+      <span class="step">ROUND END</span>
+      <h2>お題を確認</h2>
+      <p id="oralPrompt">お題を確認しましょう。</p>
       <button id="oralNextBtn" class="primary">答えを見る</button>
     </div>
   </section>
@@ -169,8 +150,7 @@
       <span class="step">RESULT</span>
       <h2 id="resultTitle">結果</h2>
       <div id="resultBody" class="result-body tablet-result"></div>
-      <button id="revealNextBtn" class="primary">答えを発表</button>
-      <button id="againBtn" class="primary" style="display:none">もう一度遊ぶ</button>
+<button id="againBtn" class="primary" style="display:none">もう一度遊ぶ</button>
       <button id="homeBtn" class="secondary">トップへ戻る</button>
     </div>
   </section>
@@ -181,23 +161,29 @@
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
     <button class="modal-close" id="closeRulesBtn" aria-label="閉じる">×</button>
     <h2 id="rulesTitle">📖 ルール</h2>
-    <p><b>1人が回答者になり、ほかの人が質問してお題を当てるゲームです。</b></p>
+    <p><b>1人が回答者になり、ほかの人が出題側になります。回答者は質問しながらお題を当てます。</b></p>
     <ol>
-      <li>今回の出題側だけがお題を確認します。</li>
-      <li>お題を隠したら、3分間の質問タイムを開始します。</li>
-      <li>質問者は何人でも参加できます。順番でも自由質問でもOKです。</li>
-      <li>回答者は質問に口頭で答えます。<b>嘘は禁止</b>です。</li>
-      <li>お題そのものを回答者が直接言うのは禁止です。</li>
-      <li>お題を知らない場合は1回だけ変更できます。</li>
-      <li>1分経過ごとに音、残り30秒で警告音、残り10秒からカウントダウン音が鳴ります。</li>
-      <li>時間切れ、または途中で「答え発表へ」を押したら正解を表示します。</li>
-      <li>次のラウンドでは回答者が「ゆか → たけ → ゆか…」と交代します。</li>
+      <li><b>回答者は画面を見ず、出題側だけがお題を確認</b>します。</li>
+      <li>回答者には<b>ジャンルだけ</b>公開します。</li>
+      <li><b>時間制限はありません。</b>正解までのカウント数を競います。</li>
+      <li>質問を1つするたびに<b>＋1カウント</b>します。</li>
+      <li>具体的なお題名を言って当てにいく「回答」も、1回につき<b>＋1カウント</b>します。</li>
+      <li>回答を外しても終了しません。何度でも質問・回答を続けられます。</li>
+      <li>1回の質問で複数のことを聞いた場合は、聞いた内容の数だけカウントします。</li>
+      <li>出題側の返答は原則<b>「はい／いいえ／どちらともいえない／わからない」</b>の4種類です。「惜しい」「近い」など追加ヒントは禁止です。</li>
+      <li>略称・愛称でも、何を指しているか明確なら正解とします。</li>
+      <li>出題側の言い間違いや操作ミスで増えた分は「押し間違い −1」で戻せます。</li>
+      <li>どうしても分からない場合は<b>「今回はパス」</b>で終了できます。</li>
+      <li>正解したら、その時点のカウントが今回の記録です。<b>少ないほど好成績</b>です。</li>
     </ol>
     <div class="example">
-      <b>例</b><br>
-      出題側のお題が「カレー」で「食べ物？」と聞かれた場合<br>
-      ⭕「はい」<br>
-      ❌ 嘘をついて「いいえ」
+      <b>例：お題「カレー」</b><br>
+      「食べ物ですか？」→ 質問 ＋1<br>
+      出題側「はい」<br>
+      「ラーメン？」→ 回答 ＋1（不正解でも続行）<br>
+      「ご飯を使いますか？」→ 質問 ＋1<br>
+      「カレー？」→ 回答 ＋1 → 正解！<br>
+      <b>記録：4カウント</b>
     </div>
   </div>
 </div>
@@ -269,5 +255,37 @@ if ("serviceWorker" in navigator) {
   </div>
 </div>
 
+<div class="app-version-info" aria-label="アプリのバージョン情報">
+  <span>Version 37</span>
+  <span>最終更新：2026年9月11日</span>
+</div>
+
+
+<div id="confirmModal" class="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-confirm></div>
+  <div class="modal-card confirm-card">
+    <button class="modal-close" id="confirmCloseBtn" type="button">×</button>
+    <h2 id="confirmTitle">確認</h2>
+    <p id="confirmMessage"></p>
+    <div class="confirm-actions">
+      <button id="confirmCancelBtn" class="secondary" type="button">戻る</button>
+      <button id="confirmOkBtn" class="primary" type="button">終了する</button>
+    </div>
+  </div>
+</div>
+
+<div id="historyModal" class="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-history></div>
+  <div class="modal-card history-card">
+    <button class="modal-close" id="historyCloseBtn" type="button">×</button>
+    <h2>📊 プレイ履歴</h2>
+    <div id="historySummary" class="history-summary"></div>
+
+      <div id="playerStats" class="player-stats"></div>
+
+    <div id="historyList" class="history-list"></div>
+    <div class="history-actions"><button id="historyClearBtn" class="secondary" type="button">履歴を消す</button></div>
+  </div>
+</div>
 </body>
 </html>
