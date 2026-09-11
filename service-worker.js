@@ -1,4 +1,4 @@
-const CACHE_NAME = "odaiate-pwa-v37-correct-one-tap";
+const CACHE_NAME = "odaiate-pwa-v52-clean-topic-screen";
 
 const APP_FILES = [
   "./",
